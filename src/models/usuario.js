@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../database/sqlConnection.js";
+import { sequelize } from "../database/db.js";
+import Conta from './contaBancaria.js';
 
 const Usuario = sequelize.define("Usuario", {
     name: { type: DataTypes.STRING, allowNull: false },
@@ -8,5 +9,9 @@ const Usuario = sequelize.define("Usuario", {
     endereco: { type: DataTypes.STRING(200), allowNull: false},
     password: { type: DataTypes.STRING, allowNull: false }
 });
+
+Usuario.hasOne(Conta, { foreignKey: 'usuarioId', onDelete: 'CASCADE' });
+Conta.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+
 
 export default Usuario;
