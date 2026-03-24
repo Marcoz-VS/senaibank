@@ -1,4 +1,4 @@
-import Conta from "../models/contaBancaria.js";
+import Conta from "../models/ContaBancaria.js";
 
 const ContaController = {
 
