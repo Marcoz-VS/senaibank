@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/db.js";
-import Conta from './contaBancaria.js';
+import Conta from './ContaBancaria.js';
 
 const Usuario = sequelize.define("Usuario", {
     name: { type: DataTypes.STRING, allowNull: false },
