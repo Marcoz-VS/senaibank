@@ -50,3 +50,5 @@ const TransacaoController = {
     }
   },
 };
+
+export default TransacaoController;
