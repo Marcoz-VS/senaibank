@@ -22,8 +22,58 @@ const ContaController = {
      res.status(500).json({ error: error.message });
      }
     },
+
+ saque: async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { valor } = req.body;
+
+    if (!valor || valor <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Valor inválido para saque",
+      });
+    }
+
+    // 🔹 Buscando a conta
+    const conta = await Conta.findOne({ where: { id } });
+
+    if (!conta) {
+      return res.status(404).json({
+        success: false,
+        message: "Conta não encontrada",
+      });
+    }
+
+    // 🔹 Verificando saldo
+    if (conta.balance < valor) {
+      return res.status(400).json({
+        success: false,
+        message: "Saldo insuficiente",
+      });
+    }
+
+    // 🔹 Calculando novo saldo
+    const novoSaldo = parseFloat(conta.balance) - parseFloat(valor);
+
+    // 🔹 Atualizando no banco
+    await Conta.update(
+      { balance: novoSaldo },
+      { where: { id } }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `Saque de R$ ${valor} realizado com sucesso!`,
+      novoSaldo,
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+},
     
-    create: async (req, res) => {
+  create: async (req, res) => {
   try {
     const { accountNumber, type } = req.body;
 
