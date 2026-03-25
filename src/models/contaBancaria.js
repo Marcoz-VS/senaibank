@@ -16,3 +16,5 @@ const Conta = sequelize.define('Account', {
     defaultValue: 'corrente'
   }
 });
+
+export default Conta;

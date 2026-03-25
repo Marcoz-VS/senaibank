@@ -15,4 +15,4 @@ async function connect() {
     }
 }
 
-export default (sequelize, connect);
+export { sequelize, connect };
