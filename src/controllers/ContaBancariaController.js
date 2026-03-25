@@ -5,7 +5,7 @@ const ContaController = {
     getSaldo: async (req, res) => {
      try {
         const { id } = req.params;
-        const resultado = await Conta.FindOne({where: {id}})
+        const resultado = await Conta.findOne({where: {id}})
 
      if(!resultado) {
         return res.status(404).json({
@@ -16,7 +16,7 @@ const ContaController = {
 
         res.status(200).json({
          success: true,
-         message: `Seu saldo é ${resultado.saldo}`,
+         message: `Seu saldo é ${resultado.balance}`,
         });
      } catch(error){
      res.status(500).json({ error: error.message });
@@ -24,35 +24,32 @@ const ContaController = {
     },
     
     create: async (req, res) => {
-      try{
-        const {accountNumber, type} = req.body;
-        const resultado = await Conta.create({
-            accountNumber,
-            type
-        });
+  try {
+    const { accountNumber, type } = req.body;
 
-        if (!resultado) {
-        return res.status(404).json({
-          success: false,
-          message: "Não foi possivel criar o usuário",
-        });
-      } 
-
-        if  (!accountNumber.trim('')) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
-      }
-        if  (!type.trim('')) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
-      }
-        res.status(201).json({
-        message: "Usuario criado com sucesso!",
-        data: resultado,
+    if (!accountNumber || !accountNumber.trim() ||
+        !type || !type.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Você precisa preencher todos os campos",
       });
+    }
 
-      } catch(error){
-        res.status(500).json({ error: error.message });
-      }
-    },
+    const resultado = await Conta.create({
+      accountNumber,
+      type,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Conta criada com sucesso!",
+      data: resultado,
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+},
 
     update: async (req, res) => {
      try{

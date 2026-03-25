@@ -7,7 +7,11 @@ const Usuario = sequelize.define("Usuario", {
     email: { type: DataTypes.STRING, unique: true, allowNull: false, validate: { isEmail: true } },
     cpf: { type: DataTypes.STRING(11), unique: true, allowNull: false },
     endereco: { type: DataTypes.STRING(200), allowNull: false},
-    password: { type: DataTypes.STRING, allowNull: false }
+    password: { type: DataTypes.STRING, allowNull: false },
+    role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
 });
 
 Usuario.hasOne(Conta, { foreignKey: 'usuarioId', onDelete: 'CASCADE' });
