@@ -79,12 +79,12 @@ const ContaController = {
       const conta = await Conta.findOne({ where: { id } });
 
       if (!conta) {
-          return res.status(404).json({
+        return res.status(404).json({
           success: false,
           message: "Conta não encontrada",
         });
       }
-      console.log(conta.balance)
+      console.log(conta.balance);
       const novoSaldo = parseFloat(conta.balance) + parseFloat(valor);
 
       await Conta.update({ balance: novoSaldo }, { where: { id } });
@@ -94,7 +94,6 @@ const ContaController = {
         message: `Deposito de R$ ${valor} realizado com sucesso!`,
         novoSaldo: novoSaldo,
       });
-
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -104,7 +103,7 @@ const ContaController = {
     try {
       const { accountNumber, type } = req.body;
 
-      if (!accountNumber || !accountNumber.trim() || !type || !type.trim()) {
+      if (!accountNumber?.trim() || !type?.trim()) {
         return res.status(400).json({
           success: false,
           message: "Você precisa preencher todos os campos",
@@ -114,6 +113,7 @@ const ContaController = {
       const resultado = await Conta.create({
         accountNumber,
         type,
+        usuarioId: req.userId,
       });
 
       res.status(201).json({
@@ -131,36 +131,28 @@ const ContaController = {
       const { id } = req.params;
       const { accountNumber, type } = req.body;
 
+      if (!accountNumber?.trim() || !type?.trim()) {
+        return res.status(400).json({
+          success: false,
+          message: "Você precisa preencher todos os campos",
+        });
+      }
+
       const [atualizado] = await Conta.update(
         { accountNumber, type },
         { where: { id } },
       );
 
       if (!atualizado) {
-        return res.status(404).json({ message: "Conta não encontrada" });
+        return res.status(404).json({
+          success: false,
+          message: "Conta não encontrada",
+        });
       }
 
-      if (!accountNumber.trim("")) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "você precisa preencher todos os campos",
-          });
-      }
-
-      if (!type.trim("")) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "você precisa preencher todos os campos",
-          });
-      }
       res.status(200).json({
         success: true,
         message: "Conta atualizada com sucesso!",
-        data: atualizado,
       });
     } catch (error) {
       res.status(500).json({ error: error.message });
