@@ -1,4 +1,5 @@
-// AuthMiddleware.js
+import jwt from 'jsonwebtoken';
+
 export function AuthMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -8,9 +9,11 @@ export function AuthMiddleware(req, res, next) {
   const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = jwt.verify(token, chaveSecreta);
+    const decoded = jwt.verify(token, process.env.CHAVE_JWT);
+    console.log(decoded);
     req.userId = decoded.id;
     req.user = decoded;
+    req.role = decoded.role;
     next();
   } catch (error) {
     return res.status(401).json({ error: "Token inválido" });
