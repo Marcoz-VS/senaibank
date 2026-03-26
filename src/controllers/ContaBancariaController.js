@@ -57,8 +57,44 @@ const ContaController = {
       res.status(200).json({
         success: true,
         message: `Saque de R$ ${valor} realizado com sucesso!`,
-        novoSaldo,
+        novoSaldo: novoSaldo,
       });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  deposito: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { valor } = req.body;
+
+      if (!valor || valor <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Valor inválido para deposito",
+        });
+      }
+
+      const conta = await Conta.findOne({ where: { id } });
+
+      if (!conta) {
+          return res.status(404).json({
+          success: false,
+          message: "Conta não encontrada",
+        });
+      }
+      console.log(conta.balance)
+      const novoSaldo = parseFloat(conta.balance) + parseFloat(valor);
+
+      await Conta.update({ balance: novoSaldo }, { where: { id } });
+
+      res.status(200).json({
+        success: true,
+        message: `Deposito de R$ ${valor} realizado com sucesso!`,
+        novoSaldo: novoSaldo,
+      });
+
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

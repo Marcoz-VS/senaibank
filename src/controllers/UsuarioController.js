@@ -1,10 +1,9 @@
 import Usuario from "../models/Usuario.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
 const UsuarioController = {
-
-    getAll: async (req, res) => {
-        try {
+  getAll: async (req, res) => {
+    try {
       const resultado = await Usuario.findAll();
 
       if (!resultado) {
@@ -22,10 +21,9 @@ const UsuarioController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  },
 
-    },
-
-    getById: async (req, res) => {
+  getById: async (req, res) => {
     try {
       const { id } = req.params;
       const resultado = await Usuario.findByPk(id);
@@ -46,38 +44,49 @@ const UsuarioController = {
       res.status(500).json({ error: error.message });
     }
   },
-   
 
   update: async (req, res) => {
     try {
       const { id } = req.params;
       const { name, password, email, endereco } = req.body;
 
-      const hash = await bcrypt.hash(password, 10)
+      const hash = await bcrypt.hash(password, 10);
 
       const [atualizado] = await Usuario.update(
         { password: hash, email, endereco },
-        { where: { id }},
+        { where: { id } },
       );
 
       if (!atualizado) {
         return res.status(404).json({ message: "Usuario não encontrado" });
       }
 
-        if  (!name.trim('')) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!name.trim("")) {
+        return res.status(400).json({
+          success: false,
+          message: "você precisa preencher todos os campos",
+        });
       }
-        
-        if  (!password.trim('')) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+
+      if (!password.trim("")) {
+        return res.status(400).json({
+          success: false,
+          message: "você precisa preencher todos os campos",
+        });
       }
-        if  (!email.trim('')) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!email.trim("")) {
+        return res.status(400).json({
+          success: false,
+          message: "você precisa preencher todos os campos",
+        });
       }
-        if  (!endereco.trim('')) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!endereco.trim("")) {
+        return res.status(400).json({
+          success: false,
+          message: "você precisa preencher todos os campos",
+        });
       }
-      
+
       res.status(200).json({
         success: true,
         data: atualizado,
@@ -88,7 +97,7 @@ const UsuarioController = {
     }
   },
 
-   delete: async (req, res) => {
+  delete: async (req, res) => {
     try {
       const { id } = req.params;
 
@@ -109,6 +118,6 @@ const UsuarioController = {
       res.status(500).json({ error: error.message });
     }
   },
-}
+};
 
 export default UsuarioController;

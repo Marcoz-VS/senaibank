@@ -8,6 +8,8 @@ ContaRouter.use(AuthMiddleware);
 
 ContaRouter.get('/:id', ContaController.getSaldo)
 ContaRouter.post('/', ContaController.create)
+ContaRouter.post('/saque/:id', ContaController.saque);
+ContaRouter.post('/deposito/:id', ContaController.deposito);
 ContaRouter.put('/:id', RoleMiddleware("admin"), ContaController.update)
 ContaRouter.delete('/:id', RoleMiddleware("admin"), ContaController.delete)
 

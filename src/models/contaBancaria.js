@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from '../database/db.js'
 
-const Conta = sequelize.define('Account', {
+const Conta = sequelize.define('Conta', {
   accountNumber: {
     type: DataTypes.STRING,
     unique: true,
