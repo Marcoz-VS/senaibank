@@ -1,44 +1,53 @@
 import Usuario from "../models/Usuario.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
 const RegisterController = {
-
-register: async (req, res) => {
+  register: async (req, res) => {
     try {
-    console.log('oi')
-      const { name, password, email, cpf, endereco, role} = req.body;
+      const { name, password, email, cpf, endereco, role } = req.body;
 
-        if  (!name) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!name) {
+        return res
+          .status(400)
+          .json({ success: false, message: "você precisa preencher o nome" });
       }
-        if  (!password) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!password) {
+        return res
+          .status(400)
+          .json({ success: false, message: "você precisa preencher a senha" });
       }
-        if  (!email) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!email) {
+        return res
+          .status(400)
+          .json({ success: false, message: "você precisa preencher o email" });
       }
-        if  (!cpf) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!cpf) {
+        return res
+          .status(400)
+          .json({ success: false, message: "você precisa preencher o cpf" });
       }
-        if  (!endereco) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
+      if (!endereco) {
+        return res.status(400).json({
+          success: false,
+          message: "você precisa preencher o endereço",
+        });
       }
-        if  (!role) {
-        return res.status(400).json({ success: false, message: "você precisa preencher todos os campos" });
-      }    
-      
+      if (!role) {
+        return res
+          .status(400)
+          .json({ success: false, message: "você precisa preencher o role" });
+      }
+
       const roles = ["user", "admin"];
 
       if (!roles.includes(role)) {
-        return  res.status(400).json({
-        message: "a role fornecida não é correta",
-        data: null,
-        })      
+        return res.status(400).json({
+          message: "O role fornecido não é correta",
+          data: null,
+        });
       }
 
-      const hash = await bcrypt.hash(password, 10)
-
-    console.log(name, password, hash, email, cpf, endereco, role);
+      const hash = await bcrypt.hash(password, 10);
 
       const resultado = await Usuario.create({
         name,
@@ -46,18 +55,15 @@ register: async (req, res) => {
         email,
         cpf,
         endereco,
-        role: role || "user"
+        role: role || "user",
       });
 
-    
-
-            if (!resultado) {
+      if (!resultado) {
         return res.status(404).json({
           success: false,
           message: "Não foi possivel criar o usuário",
         });
       }
-
 
       res.status(201).json({
         message: "Usuario criado com sucesso!",
@@ -67,6 +73,6 @@ register: async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   },
-}
+};
 
 export default RegisterController;
