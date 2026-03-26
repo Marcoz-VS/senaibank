@@ -1,3 +1,4 @@
+// AuthMiddleware.js
 import jwt from 'jsonwebtoken';
 
 export function AuthMiddleware(req, res, next) {

@@ -1,4 +1,4 @@
-import Usuario from "../models/Usuario.js";
+import Usuario from "../models/usuario.js";
 import bcrypt from "bcrypt";
 
 const UsuarioController = {
