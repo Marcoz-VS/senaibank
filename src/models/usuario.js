@@ -17,3 +17,5 @@ const Usuario = sequelize.define("Usuario", {
 
 Usuario.hasOne(Conta, { foreignKey: "usuarioId", onDelete: "CASCADE" });
 Conta.belongsTo(Usuario, { foreignKey: "usuarioId" });
+
+export default Usuario;
