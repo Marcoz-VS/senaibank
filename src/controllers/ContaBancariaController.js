@@ -103,16 +103,16 @@ const ContaController = {
     try {
       const { accountNumber, type } = req.body;
 
-      if (!accountNumber?.trim() || !type?.trim()) {
+      if (!accountNumber) {
         return res.status(400).json({
           success: false,
-          message: "Você precisa preencher todos os campos",
+          message: "Você precisa colocar o numero da conta",
         });
       }
 
       const resultado = await Conta.create({
         accountNumber,
-        type,
+        type: type || "corrente",
         usuarioId: req.userId,
       });
 
