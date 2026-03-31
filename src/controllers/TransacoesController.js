@@ -18,6 +18,7 @@ const TransacaoController = {
 
       const contaOrigem = await Conta.findByPk(origemId, { transaction: t });
       const contaDestino = await Conta.findByPk(destinoId, { transaction: t });
+      console.log(destinoId)
 
       if (!contaOrigem || !contaDestino) {
         await t.rollback();

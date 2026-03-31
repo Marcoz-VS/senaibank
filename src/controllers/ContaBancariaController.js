@@ -1,4 +1,5 @@
 import Conta from "../models/ContaBancaria.js";
+import Transacao from "../models/Transacao.js"
 
 const ContaController = {
   getSaldo: async (req, res) => {
@@ -20,6 +21,28 @@ const ContaController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  },
+  getTransactions: async (req, res) => {
+   try{
+    const { contaId } = req.params;
+    const resultado = await Transacao.findAll({ where: { contaId } });
+    console.log(contaId)
+    console.log(resultado)
+
+        if (!resultado.length) {
+        return res.status(404).json({
+          success: false,
+          message: "Nenhuma transação foi feita",
+        });
+      }
+        res.status(200).json({
+        success: true,
+        data: resultado
+      });
+
+   }catch(error){
+    res.status(500).json({ error: error.message });
+   }
   },
 
   saque: async (req, res) => {

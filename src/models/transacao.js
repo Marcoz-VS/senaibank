@@ -16,7 +16,7 @@ const Transacao = sequelize.define('Transacao', {
   }
 });
 
-Conta.hasMany(Transacao, { foreignKey: 'accountNumber' });
-Transacao.belongsTo(Conta, { foreignKey: 'accountNumber' });
+Conta.hasMany(Transacao, { foreignKey: 'contaId' });
+Transacao.belongsTo(Conta, { foreignKey: 'contaId' });
 
 export default Transacao;
