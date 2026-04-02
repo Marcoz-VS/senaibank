@@ -2,10 +2,10 @@ import Conta from "../models/ContaBancaria.js";
 
 export const VerifyMiddleware = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id, contaId} = req.params;
     const logadoId = req.userId;
 
-    const conta = await Conta.findByPk(id);
+    const conta = await Conta.findByPk(id || contaId);
 
     if (!conta) {
       return res.status(404).json({ success: false, message: "Conta não encontrada" });

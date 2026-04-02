@@ -8,7 +8,7 @@ const ContaRouter = express.Router();
 ContaRouter.use(AuthMiddleware);
 
 ContaRouter.get('/:id', VerifyMiddleware, ContaController.getSaldo)
-ContaRouter.get('/extrato/:contaId',  ContaController.getTransactions)
+ContaRouter.get('/extrato/:contaId', VerifyMiddleware,  ContaController.getTransactions)
 ContaRouter.post('/', ContaController.create)
 ContaRouter.post('/saque/:id', VerifyMiddleware, ContaController.saque);
 ContaRouter.post('/deposito/:id', VerifyMiddleware, ContaController.deposito);

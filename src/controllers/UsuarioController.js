@@ -53,7 +53,7 @@ const UsuarioController = {
       const hash = await bcrypt.hash(password, 10);
 
       const [atualizado] = await Usuario.update(
-        { password: hash, email, endereco },
+        { password: hash, email, endereco, name },
         { where: { id } },
       );
 
