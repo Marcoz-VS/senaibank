@@ -5,7 +5,7 @@ export const VerifyMiddleware = async (req, res, next) => {
     const { id, contaId} = req.params;
     const logadoId = req.userId;
 
-    const conta = await Conta.findByPk(id || contaId);
+    const conta = await Conta.findByPk(id || contaId );
 
     if (!conta) {
       return res.status(404).json({ success: false, message: "Conta não encontrada" });

@@ -5,8 +5,12 @@ import { sequelize } from "../database/db.js";
 const TransacaoController = {
   transferir: async (req, res) => {
     const t = await sequelize.transaction();
+
     try {
-      const { origemId, destinoId, valor } = req.body;
+      const { id } = req.params;
+      const { destinoId, valor } = req.body;
+      const origemId = id;
+      console.log(origemId)
 
       if (!origemId || !destinoId || !valor || valor <= 0) {
         await t.rollback();
@@ -16,9 +20,15 @@ const TransacaoController = {
         });
       }
 
-      const contaOrigem = await Conta.findByPk(origemId, { transaction: t });
-      const contaDestino = await Conta.findByPk(destinoId, { transaction: t });
-      console.log(destinoId)
+        if (origemId === destinoId) {
+        return res.status(400).json({
+          success: false,
+          message: "Não é possível transferir para a mesma conta",
+        });
+      }
+
+      const contaOrigem = await Conta.findByPk(origemId, { transaction: t, lock: t.LOCK.UPDATE, });
+      const contaDestino = await Conta.findByPk(destinoId, { transaction: t, lock: t.LOCK.UPDATE, });
 
       if (!contaOrigem || !contaDestino) {
         await t.rollback();
