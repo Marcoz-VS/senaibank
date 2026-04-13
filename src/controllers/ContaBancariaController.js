@@ -26,8 +26,6 @@ const ContaController = {
    try{
     const { contaId } = req.params;
     const resultado = await Transacao.findAll({ where: { contaId } });
-    console.log(contaId)
-    console.log(resultado)
 
         if (!resultado.length) {
         return res.status(404).json({
