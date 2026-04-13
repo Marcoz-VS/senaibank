@@ -1,11 +1,27 @@
 import Usuario from "../models/usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Joi from 'joi'
+
+const schema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required()
+});
 
 const LoginController = {
   login: async (req, res) => {
     try {
-      const { password, email } = req.body;
+      const { error, value } = schema.validate(req.body, { abortEarly: false });
+
+        if (error) {
+        return res.status(400).json({
+          success: false,
+          message: "Dados inválidos",
+          errors: error.details.map((detail) => detail.message),
+        });
+      }
+
+      const { password, email } = value;
 
       if (!email || !password) {
         return res.status(400).json({
