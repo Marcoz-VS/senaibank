@@ -1,6 +1,7 @@
 import Usuario from "../models/usuario.js"
 import bcrypt from "bcrypt";
 import Joi from "joi";
+import validarCPF  from '../validations/validarCpf.js'
 
 const schema = Joi.object({
   name: Joi.string().min(3).max(255).required().messages({
@@ -48,6 +49,13 @@ const RegisterController = {
 
       const { name, password, email, cpf, endereco, role } = value;
 
+      if (!validarCPF(cpf)) {
+        return res.status(400).json({
+          success: false,
+          message: "CPF inválido",
+        });
+      }
+
       const roles = ["user", "admin"];
 
       if (!roles.includes(role)) {
@@ -74,6 +82,7 @@ const RegisterController = {
           message: "Não foi possivel criar o usuário",
         });
       }
+
 
       res.status(201).json({
         message: "Usuario criado com sucesso!",

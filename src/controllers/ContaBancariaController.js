@@ -97,6 +97,13 @@ const ContaController = {
         });
       }
 
+      if (valor >= 100000000){
+        return res.status(400).json({
+          success: false,
+          message: "Você não pode depositar um valor maior que 1 Bilhão"
+        })
+      }
+
       const conta = await Conta.findOne({ where: { id } });
 
       if (!conta) {
@@ -152,7 +159,7 @@ const ContaController = {
       const { id } = req.params;
       const { accountNumber, type } = req.body;
 
-      if (!accountNumber?.trim() || !type?.trim()) {
+      if (!accountNumber.trim() || !type.trim()) {
         return res.status(400).json({
           success: false,
           message: "Você precisa preencher todos os campos",
