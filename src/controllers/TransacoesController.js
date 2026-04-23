@@ -12,7 +12,7 @@ const TransacaoController = {
       const origemId = id;
       console.log(origemId)
 
-      if (!origemId || !destinoId || !valor || valor <= 0) {
+      if (!origemId || !destinoId || !valor || valor <= 0 || valor >= 100000000) {
         await t.rollback();
         return res.status(400).json({
           success: false,

@@ -100,7 +100,7 @@ const ContaController = {
       if (valor >= 100000000){
         return res.status(400).json({
           success: false,
-          message: "Você não pode depositar um valor maior que 1 Bilhão"
+          message: "Você não pode depositar um valor maior que 100 milhões"
         })
       }
 

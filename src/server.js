@@ -9,6 +9,9 @@ import RegisterRouter from './routes/RegisterRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const database = process.env.DB_NAME
+const user = process.env.DB_USER
+const pass = process.env.DB_PASS
 
 app.use(express.json());
 app.use('/usuarios', UsuarioRouter);
