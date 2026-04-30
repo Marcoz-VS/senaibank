@@ -8,7 +8,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 async function connect() {
     try {
         await sequelize.authenticate();
-        await sequelize.sync();
+        await sequelize.sync({ force: true });
         console.log('Conexão com MySQL estabelecida com sucesso!');
     } catch (error) {
         console.error('Erro ao conectar ao banco:', error);

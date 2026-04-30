@@ -14,7 +14,7 @@ export function AuthMiddleware(req, res, next) {
     console.log(decoded);
     req.userId = decoded.id;
     req.user = decoded;
-    req.role = decoded.role;
+    req.user.role = decoded.role;
     next();
   } catch (error) {
     return res.status(401).json({ error: "Token inválido" });

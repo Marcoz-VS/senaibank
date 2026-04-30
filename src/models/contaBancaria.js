@@ -14,6 +14,11 @@ const Conta = sequelize.define('Conta', {
   type: {
     type: DataTypes.ENUM('corrente', 'poupanca'),
     defaultValue: 'corrente'
+  },
+  usuarioId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true
   }
 });
 

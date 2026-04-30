@@ -127,32 +127,48 @@ const ContaController = {
     }
   },
 
-  create: async (req, res) => {
-    try {
-      const { accountNumber, type } = req.body;
+create: async (req, res) => {
+  try {
+    const { accountNumber, type } = req.body;
 
-      if (!accountNumber) {
-        return res.status(400).json({
-          success: false,
-          message: "Você precisa colocar o numero da conta",
-        });
-      }
-
-      const resultado = await Conta.create({
-        accountNumber,
-        type: type || "corrente",
-        usuarioId: req.userId,
+    if (!accountNumber) {
+      return res.status(400).json({
+        success: false,
+        message: "Você precisa colocar o número da conta",
       });
-
-      res.status(201).json({
-        success: true,
-        message: "Conta criada com sucesso!",
-        data: resultado,
-      });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
     }
-  },
+
+    const contaExistente = await Conta.findOne({
+      where: { accountNumber }
+    });
+
+    if (contaExistente) {
+      return res.status(400).json({
+        success: false,
+        message: "Já existe uma conta com esse número",
+      });
+    }
+
+    const resultado = await Conta.create({
+      accountNumber,
+      type: type || "corrente",
+      usuarioId: req.userId,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Conta criada com sucesso!",
+      data: resultado,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Erro ao criar conta",
+      error: error.message
+    });
+  }
+},
 
   update: async (req, res) => {
     try {
